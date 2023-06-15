@@ -1,0 +1,13 @@
+###
+GET http://localhost:3007/api/users HTTP/1.1
+content-type: application/json
+
+###
+POST http://localhost:3007/api/users HTTP/1.1
+content-type: application/json
+
+{
+    "username": "thunder",
+    "name": "Lukas Fischer",
+    "password": "fisch"
+}
