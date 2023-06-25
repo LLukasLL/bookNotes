@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 require('dotenv').config({ path:'./.env' })
 
 const PORT = process.env.PORT

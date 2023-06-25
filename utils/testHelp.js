@@ -1,25 +1,73 @@
-const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
 
-// Reihenfolge geändert, bei Problemen zurückgehen auf Tutorial
-const User = require('../modules/User')
+const User = require('../models/User')
+const Book = require('../models/Book')
+// const BookNote = require('../models/BookNote')
 
-const app = require('../app')
-
-const supertest = require('supertest')
-const api = supertest(app)
+const login = async (api) => {
+  const result = await api
+    .post('/api/login')
+    .send({ username: 'root', password: 'mySecretPassword' })
+  // console.log('logintoken: ', result.body.token)
+  return result.body.token
+}
 
 const initializeDB = async () => {
-
   // intialize root User
   await User.deleteMany({})
+  await Book.deleteMany({})
 
-  const passwordHash = await bcrypt.hash('sekret', 10)
+  const passwordHash = await bcrypt.hash('mySecretPassword', 10)
   const user = new User({ username: 'root', passwordHash })
 
   await user.save()
+
+  const rootUserFromDB = await User.find({ username: 'root' })
+  const rootUserFromDBObj = rootUserFromDB[0].toJSON()
+  const rootID = rootUserFromDBObj.id
+
+  const books = [
+    {
+      title: 'Meditations',
+      author: 'Marcus Aurelius',
+      comments: 'My Favourite Philosophy Book',
+      goodreads: '',
+      bookNotes: [],
+      user: rootID,
+    },
+    {
+      title: 'Meditations - the sequel',
+      author: 'Marcus Aurelius',
+      comments: 'My next Favourite Philosophy Book, if it would exist',
+      goodreads: '',
+      bookNotes: [],
+      user: rootID,
+    }
+  ]
+  const Books = books.map(book => new Book(book))
+  for (let book of Books) {
+    await book.save()
+  }
+
+  let booksFromDB = await Book.find({})
+  booksFromDB = booksFromDB.map(b => b.toJSON())
+  booksFromDB.forEach(b => rootUserFromDB[0].books = rootUserFromDB[0].books.concat(b.id))
+  await rootUserFromDB[0].save()
+}
+
+const usersInDb = async () => {
+  const users = await User.find({})
+  return users.map(u => u.toJSON())
+}
+
+const booksInDb = async () => {
+  const objects = await Book.find({})
+  return objects.map(b => b.toJSON())
 }
 
 module.exports = {
   initializeDB,
+  usersInDb,
+  login,
+  booksInDb,
 }
