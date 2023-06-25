@@ -61,7 +61,6 @@ describe('user creation and login', () => {
     const result = await api
       .get('/api/users/')
 
-    console.log(result.body)
     expect(result.body[0].books).toHaveLength(2)
 
   })
