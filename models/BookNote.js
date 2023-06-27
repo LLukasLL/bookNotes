@@ -4,10 +4,10 @@ const bookNoteSchema = mongoose.Schema({
   highlight: String,
   comments: Array,
   keywords: Array,
-  references: {
+  references: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'BookNote'
-  },
+  }],
   important: Boolean,
   actionTag: String,
   book: {

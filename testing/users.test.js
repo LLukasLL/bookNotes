@@ -56,14 +56,6 @@ describe('user creation and login', () => {
 
     expect(usersAtEnd).toEqual(usersAtStart)
   })
-
-  test('get users and populate works', async () => {
-    const result = await api
-      .get('/api/users/')
-
-    expect(result.body[0].books).toHaveLength(2)
-
-  })
 })
 afterAll(async () => {
   await mongoose.connection.close()

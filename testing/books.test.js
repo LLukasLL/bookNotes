@@ -20,7 +20,7 @@ describe('books api stuff', () => {
       author: 'Me',
       comments: 'do NOT read !!!',
       goodreads: '',
-      bookNotes: [],
+      // bookNotes: [],
     }
 
     await api
@@ -55,7 +55,7 @@ describe('books api stuff', () => {
       author: 'Me',
       comments: 'do NOT read !!!',
       goodreads: '',
-      bookNotes: [],
+      // bookNotes: [],
     }
 
     const result = await api
