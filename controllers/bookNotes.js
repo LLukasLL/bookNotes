@@ -20,10 +20,10 @@ bookNotesRouter.get('/', async (request, response) => {
     return response.status(401).json({ error: 'token invalid' })
   }
   const user = await User.findById(decodedToken.id)
-  const books = await BookNote.find({ user: user.id })
+  const bookNotes = await BookNote.find({ user: user.id })
   // const books = await Book.find({ user: user.id }).populate('bookNotes')
 
-  response.json(books)
+  response.json(bookNotes)
 })
 
 bookNotesRouter.get('/frombook/:id', async (request, response) => {
@@ -34,7 +34,7 @@ bookNotesRouter.get('/frombook/:id', async (request, response) => {
   }
   const user = await User.findById(decodedToken.id)
   const book = await Book.findById(request.params.id)
-  const bookNotes = await BookNote.findById({ user: user.id, book: book.id })
+  const bookNotes = await BookNote.find({ user: user.id, book: book.id })
   // if (book.user !== user.username) { response.status(401).json({ error: 'no access to this book, belongs to other user' }) }
   response.json(bookNotes)
 })
