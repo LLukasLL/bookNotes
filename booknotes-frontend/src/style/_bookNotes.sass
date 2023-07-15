@@ -1,0 +1,63 @@
+$card-border: 2px solid gray
+
+.notes-container
+  height: 100%
+  display: flex
+  flex-direction: column
+  align-items: center
+  background-color: white
+  width: 60vw
+  margin-left: 20vw
+  justify-content: center
+
+.notes-header
+  width: 100%
+  padding-top: 15px
+  padding-bottom: 15px
+  border: 2px solid black
+  height: 30px
+  font-size: 15px
+  font-family: "Times New Roman"
+  .title
+    font-family: "Times New Roman"
+    font-weight: bold
+    margin: 10px
+  .author
+    font-family: "Times New Roman"
+    margin: 10px
+  .home
+    height: 100%
+    position: absolute
+    right: 21vw
+  .home:hover
+    transform: translateY(-2px)
+
+
+.note-card 
+  border-left: $card-border
+  border-right: $card-border
+  border-bottom: $card-border
+  width: 100%
+    font-family: "Times New Roman"
+  p, span
+    font-family: "Times New Roman"
+    margin-left: 10px
+
+
+.modNote-wrapper
+  form
+    display: flex
+
+.expLess, .expMore
+  position: absolute
+  right: 21vw
+  
+.editBtn
+  position: absolute
+  right: 24vw
+
+
+.expLess:hover, .expMore:hover, .editBtn:hover, .deleteX:hover
+  transform: translateY(-2px)
+
+

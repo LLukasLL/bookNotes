@@ -1,0 +1,161 @@
+/* Variables: */
+:root{
+    --main-border-config: 1px solid gray;
+    --border-big: 2px solid gray;
+}
+/* boilerplate stuff */
+html, body {
+    margin: 0px;
+    padding: 0px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-family: Roboto;
+}
+ul {
+    list-style-type: none;
+    padding: 0px;
+}
+input{
+    border: 0px;
+}
+.btn{
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 4px;
+}
+.navbar{
+    background-color: black;
+    height: 50px;
+    flex-shrink: 0;
+    padding: 0.75rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.header-title{
+    color: white;
+    font-size: xx-large;
+}
+.main-container{
+    min-height: 80%;
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+}
+.content{
+    width: 100%;
+    height: 100%;
+}
+.sideboard-left{
+    background-color: white;
+}
+.sbl-container{
+    display: flex;
+    justify-content: center;
+}
+.sbl-li{
+    display: flex;
+    justify-content: space-between;
+}
+.new-list-form{
+    display: flex;
+    justify-content: space-between;
+    border:  var(--main-border-config);
+    border-radius: 6px;
+}
+.footer{
+    background-color: black;
+    min-height: 40px;
+    margin-top: auto;
+}
+/* formatting classes: */
+.center{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.mg-r-16px{
+    margin-right: 16px;
+}
+.mg-2{
+    margin: 2rem;
+}
+.sticky-top{
+    position: sticky;
+    top: 0;
+}
+.radius-6{
+    border-radius: 6px;
+    border: var(--main-border-config);
+}
+.top-border{
+    border-top: var(--main-border-config);
+}
+.right-border{
+    border-right: var(--border-big);
+}
+.pad-4px{
+    padding: 4px;
+}
+.pad-16px{
+    padding: 16px;
+}
+.mr-16px{
+    margin-right: 16px;
+}
+.fit-space{
+    width: auto
+}
+/* layout stuff */
+.container{
+    display: block !important;
+    box-sizing: border-box;
+}
+.row{
+    display: flex;
+    box-sizing: border-box;
+    position: relative;
+    align-items: center;
+}
+.col, .col-2, .col-3 {
+    flex-basis: 0;
+    -webkit-box-flex: 1;
+    max-width: 100%;
+}
+.icon{
+    width: 16px;
+    flex-shrink: 0;
+}
+.colsmall{
+    flex-grow: 0.5;
+}
+.col {
+    flex-grow: 1;
+}
+.col-2{
+    flex-grow: 2;
+}
+.col-3{
+    flex-grow: 3;
+}
+.col-name{
+    width: 16%;
+}
+.col-dueDate{
+    width: 16%;
+}
+.col-descr{
+    width: 50%;
+}
+.col-prio{
+    width: 20%;
+}
+.col-btn{
+    width: 64px;
+    display: flex;
+    justify-content: center;
+}
+.bold{
+    font-weight: 900;
+}
+/* custom stuff: */
