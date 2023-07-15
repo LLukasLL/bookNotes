@@ -17,3 +17,6 @@ Frontend mit React:
 - Frontend-Formulare für die Bearbeitung aller Datenobjekte
 - Ansprechenderes Design
 - Upload und Abgleich mit Notizen-Textdatei aus Kindle
+
+  
+<img width="991" alt="Bildschirmfoto 2023-07-15 um 16 26 41" src="https://github.com/LLukasLL/bookNotes/assets/109357711/431600f1-ceac-4e86-ac32-002856f24ea1">
