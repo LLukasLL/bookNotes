@@ -10,6 +10,8 @@ const bookNoteSchema = mongoose.Schema({
   }],
   important: Boolean,
   actionTag: String,
+  locationStart: Number,
+  locationEnd: Number,
   book: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Book'

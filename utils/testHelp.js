@@ -65,6 +65,8 @@ const initializeDB = async () => {
       references: [],
       important: true,
       actionTag: '',
+      locationStart: 10,
+      locationEnd: 12,
       book: booksFromDB[0].id,
       user: rootID
     },
@@ -75,6 +77,8 @@ const initializeDB = async () => {
       references: [],
       important: false,
       actionTag: '',
+      locationStart: 20,
+      locationEnd: 24,
       book: booksFromDB[0].id,
       user: rootID
     }

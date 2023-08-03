@@ -1,13 +1,17 @@
 import { useState, useEffect } from 'react'
 
 import ErrMess from './components/ErrMess'
-
 import Header from './components/Header'
 import LoginForm from './components/Login'
-import Content from './components/Content'
+import Book from "./components/Book"
+import BookNotes from "./components/BookNotes"
+import bookService from './services/book'
+import bookNotesService from './services/bookNote'
 
 import loginService from './services/login'
 import auth from './services/auth'
+
+import Container from "react-bootstrap/esm/Container"
 
 function App() {
   const [username, setUsername] = useState('') 
@@ -15,6 +19,9 @@ function App() {
   const [user, setUser] = useState(null)
   const [token, setToken] = useState('')
   const [errorMessage, setErrorMessage] = useState(null)
+  const [refresh, setRefresh] = useState(0)
+  const [activePage, setActivePage] = useState(null)
+
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedInAppUser')
@@ -29,6 +36,33 @@ function App() {
     if (errorMessage !== null) setTimeout(() => {setErrorMessage(null)}, 500)
   }, [errorMessage])
 
+
+  const [activeBook, setActiveBook] = useState(null)
+  const [books, setBooks] = useState([])
+  const [bookNotes, setBookNotes] = useState([])
+
+  useEffect(() => {
+    async function getBooks() {
+      try {
+        const books = await bookService.getAll()
+        setBooks(books)
+      } catch (exception) {
+        console.log('error catched')
+        setErrorMessage('request failed')
+      }
+    }
+    async function getBookNotes() {
+      try {
+        const bookNotes = await bookNotesService.getNotesFromBook(activeBook.id)
+        setBookNotes(bookNotes)
+      } catch (exception) {
+        setErrorMessage('request failed')
+      }
+    }
+    setBookNotes([])
+    activeBook === null ? getBooks() : getBookNotes()
+  }, [activeBook, refresh])
+
   const loginForm = () => {    
     return (
         <LoginForm
@@ -41,12 +75,20 @@ function App() {
   )}
   const content = () => {
     return (
-      <div>
-        <Content
-          user={user}
-          setErrorMessage={setErrorMessage}
-        />
-      </div>
+    <div id='content-wrapper' className='Content'>
+      <Container>
+        <div className="books-container">
+          { activeBook === null ? books.map(book => <Book key={book.id} book={book} setActiveBook={setActiveBook}/>) : null }
+        </div>
+      </Container>
+      {activeBook && <BookNotes
+        activeBook={activeBook}
+        setErrorMessage={setErrorMessage}
+        bookNotes={bookNotes}
+        refresh={refresh}
+        setRefresh={setRefresh}
+      />}
+    </div>
     )
   }
   const logout = () => {
@@ -76,11 +118,21 @@ function App() {
   } 
   return (
     <div className="App">
-      <Header user={user} setUser={setUser} logout={logout}/>
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+        crossOrigin="anonymous"
+      />
+      <Header 
+        user={user}
+        logout={logout}
+        setActiveBook={setActiveBook}
+      />
       <ErrMess errorMessage={errorMessage}/>
       {user === null ? loginForm() : content()}
       {/* <Footer/> */}
-    </div>
+      </div>
   )
 }
 

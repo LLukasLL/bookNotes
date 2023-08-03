@@ -6,7 +6,6 @@ const route = baseUrl + '/api/bookNotes'
 
 const getNotesFromBook = async (id) => {
   const config = auth.getConfig()
-  console.log('axios get id: ', id)
   const res = await axios.get(`${route}/frombook/${id}`, config)
   return res.data
 }

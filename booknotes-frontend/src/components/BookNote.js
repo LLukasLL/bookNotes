@@ -1,72 +1,166 @@
-import { useEffect, useState } from "react"
+import { useState } from 'react'
+import Accordion from 'react-bootstrap/Accordion'
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/esm/Button'
+import Badge from 'react-bootstrap/Badge'
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import CloseButton from 'react-bootstrap/CloseButton'
 
-const BookNote = ({ bookNote, noteActive, toggleActiveNote }) => {
-  const [modActive, setModActive] = useState(null)
+import bookNotesService from '../services/bookNote'
+
+
+const BookNote = ({ bookNote, refresh, setRefresh }) => {
+
+  const [mod, setMod] = useState(null)
+  const [keywords, setKeywords] = useState(bookNote.keywords)
+  const [comments, setComments] = useState(bookNote.comments)
   const [highlight, setHighlight] = useState(bookNote.highlight)
-  const [newKeyword, setNewkeyword] = useState('')
-  const [newComment, setNewComment] = useState('') 
+  const [newKeyword, setNewKeyword] = useState('')
+  const [newComment, setNewComment] = useState('')
+  const [locationStart, setLocationStart] = useState(bookNote.locationStart)
+  const [locationEnd, setLocationEnd] = useState(bookNote.locationEnd)
 
-  const toggleModActive = noteId => {
-    modActive === null
-      ? setModActive(noteId)
-      : setModActive(null)
-    }
-
-  useEffect(() => { if (noteActive !== bookNote.id) { setModActive(null) } }, [noteActive])
-
-  const keywords = () => {
-   if (noteActive === bookNote.id) {
-    if (modActive === bookNote.id) {
-      return bookNote.keywords.map(keyword => <div>
-          <span>{keyword}</span>
-          <span className="deleteX">x</span>
-        </div>)
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+    setMod(null)
+    const updateObj = {}
+    if (newKeyword !== '') {
+      updateObj.keywords=keywords.concat(newKeyword)
+      setKeywords(keywords.concat(newKeyword))
     } else {
-      return bookNote.keywords.map(keyword => <span key={keyword}>{keyword}</span>)
+      updateObj.keywords=keywords
     }
-   }  
+    if (newComment !== '') {
+      updateObj.comments=comments.concat(newComment)
+      setComments(comments.concat(newComment))
+    } else {
+      updateObj.comments=comments
+    }
+    if (highlight !== bookNote.highlight) updateObj.highlight = highlight
+    if (locationStart !== bookNote.locationStart) updateObj.locationStart = locationStart
+    if (locationEnd !== bookNote.locationEnd) updateObj.locationEnd = locationEnd
+    await bookNotesService.update(bookNote.id, updateObj)
+    setNewComment('')
+    setNewKeyword('')
+    if (locationStart !== bookNote.locationStart || locationEnd !== bookNote.locationEnd) {
+      setRefresh(refresh + 1)
+    }
+ }
+
+  const undo = () => {
+    setHighlight(bookNote.highlight)
+    setKeywords(bookNote.keywords)
+    setComments(bookNote.comments)
+    setNewComment('')
+    setNewKeyword('') 
   }
 
-  return (
-      <div className="note-card" >
-        {noteActive === bookNote.id
-          ? <svg className="expLess" onClick={() => toggleActiveNote(bookNote)} xmlns="http://www.w3.org/2000/svg" height="48" viewBox="0 -960 960 960" width="48"><path d="m283-345-43-43 240-240 240 239-43 43-197-197-197 198Z"/></svg>
-          : <svg className="expMore" onClick={() => toggleActiveNote(bookNote)} xmlns="http://www.w3.org/2000/svg" height="48" viewBox="0 -960 960 960" width="48"><path d="M480-345 240-585l43-43 197 198 197-197 43 43-240 239Z"/></svg>
-        }
-        {noteActive === bookNote.id
-          ? <svg className="editBtn" onClick={() => toggleModActive(bookNote.id)} xmlns="http://www.w3.org/2000/svg" height="48" viewBox="0 -960 960 960" width="48"><path d="M180-180h44l443-443-44-44-443 443v44Zm614-486L666-794l42-42q17-17 42-17t42 17l44 44q17 17 17 42t-17 42l-42 42Zm-42 42L248-120H120v-128l504-504 128 128Zm-107-21-22-22 44 44-22-22Z"/></svg>
-          : null
-        }
-        {modActive === bookNote.id
-          ? <input
-              value={highlight}
-              onChange={({ target }) => setHighlight(target.value)}
-          />
-          : <p>{bookNote.highlight}</p> 
-        }
-        {keywords()}
-        {noteActive === bookNote.id 
-          ? <p>comments: {bookNote.comments}</p> 
-          : null
-        }
-        {modActive === bookNote.id
-          ? <div className="modNote-wrapper">
-              <form>
-              <input
-                placeholder="set new keyword"
+  const exit = () => {
+    undo()
+    setMod(null)
+  }
+
+  return ( mod === null 
+        ? <Accordion.Item eventKey={bookNote.id} key={bookNote.id}>
+        <Accordion.Header>
+          {highlight}
+        </Accordion.Header>
+        <Accordion.Body>
+            <Row>
+                <Col md="auto"><p>keywords: </p></Col>
+                {keywords.map(keyword => <Col md="auto" key={keyword}><Badge bg="primary">{keyword}</Badge></Col>)}
+            </Row>
+            <p>comments:</p>
+            {comments.map(comm => <p key={comm}>{comm}</p>)} 
+          <Button onClick={() => setMod(true)} variant="outline-primary">edit</Button>
+        </Accordion.Body>
+        </Accordion.Item>
+        : <Accordion.Item eventKey={bookNote.id} key={bookNote.id}>
+        <Accordion.Header>
+          {highlight}
+        </Accordion.Header>
+        <Accordion.Body>
+          <Form onSubmit={handleSubmit}>
+            <Form.Group className='mb-2'>
+                <Form.Control
+                  type='text'
+                  value={highlight}
+                  onChange={({ target }) => setHighlight(target.value)}
+                />
+            </Form.Group>
+            <Form.Group className="mb-2">
+              <Row>
+                <Col md='auto'>keywords:</Col>
+                {keywords.map(keyword => <Col md="auto" key={keyword}>
+                  <Badge bg="primary" onClick={() => setKeywords(keywords.filter(word => word !== keyword))}>
+                    <span>{keyword}</span>
+                    <CloseButton />
+                  </Badge>
+                </Col>)}
+              </Row>
+            </Form.Group>
+            <Form.Group className="mb-2">
+              <Form.Control
+                type='text'
+                placeholder='new Keyword'
                 value={newKeyword}
-                onChange={({ target }) => setNewkeyword(target.value)}
+                onChange={({ target }) => setNewKeyword(target.value)}
               />
-              <input
-                placeholder="add new comment"
+            </Form.Group>
+            <Form.Group className='mb-2'>
+            <Form.Label htmlFor="disabledSelect">comments:</Form.Label>
+              {comments.map(comment => <p key={comment}>
+                  <CloseButton onClick={() => setComments(comments.filter(comm => comm !== comment))}/>
+                  {comment}
+                </p>)}
+            </Form.Group>
+            <Form.Group className="mb-2">
+              <Form.Control
+                type='text'
                 value={newComment}
+                placeholder='new Comment'
                 onChange={({ target }) => setNewComment(target.value)}
               />
-            </form>
-          </div>
-          : null}
-    </div>
+            </Form.Group>
+            <Form.Group className='mb-2'>
+              <Form.Label htmlFor="disabledSelect">Change Location of BookNote:</Form.Label>
+              <Row>
+                <Col xs lg='1'>
+                  <Form.Label  style={{marginTop: '0.5rem'}} htmlFor="disabledSelect">Start:</Form.Label>
+                </Col>
+                <Col>
+                  <Form.Control
+                    type='Number'
+                    value={locationStart}
+                    placeholder='location Start'
+                    onChange={({ target }) => setLocationStart(target.value)}
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col xs lg='1'>
+                  <Form.Label  style={{marginTop: '0.5rem'}} htmlFor="disabledSelect">End:</Form.Label>
+                </Col>
+                <Col>
+                  <Form.Control
+                    type='Number'
+                    value={locationEnd}
+                    placeholder='location End'
+                    onChange={({ target }) => setLocationEnd(target.value)}
+                  />
+                </Col>
+              </Row>
+            </Form.Group>
+            <Row>
+              <Col md='auto'><Button type='submit'>save</Button></Col>
+              <Col md='auto'><Button onClick={undo}>undo</Button></Col>
+              <Col md='auto'><Button onClick={exit}>exit</Button></Col>
+            </Row>
+          </Form>
+        </Accordion.Body>
+      </Accordion.Item>
   )
 }
-  
-  export default BookNote
+
+export default BookNote

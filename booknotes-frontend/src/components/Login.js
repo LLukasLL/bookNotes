@@ -1,3 +1,8 @@
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import Card from 'react-bootstrap/Card';
+import Container from 'react-bootstrap/esm/Container';
+
 const LoginForm = ({
   handleSubmit,
   handleUsernameChange,
@@ -6,29 +11,32 @@ const LoginForm = ({
   password
 }) => {
   return (
-    <div className="LoginForm-Wrapper">
-    <div className="LoginForm center">
-      <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <input
-            placeholder="username"
-            value={username}
-            onChange={handleUsernameChange}
-          />
-        </div>
-        <div>
-          <input
-            type="password"
-            placeholder="username"
-            value={password}
-            onChange={handlePasswordChange}
-          />
-        </div>
-        <button type="submit">login</button>
-      </form>
-    </div>
-    </div>
+    <Container>
+      <Card style={{ width: '1 rem', padding: '24px' }}>
+        <h2>Login</h2>
+        <Form onSubmit={handleSubmit}>
+          <Form.Group className="mb-3">
+            <Form.Control 
+              type="username" 
+              placeholder="username"
+              value={username}
+              onChange={handleUsernameChange}
+            />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="formBasicPassword">
+            <Form.Control
+              type='password'
+              placeholder='password'
+              value={password}
+              onChange={handlePasswordChange}
+            />
+          </Form.Group>
+          <Button variant="primary" type="submit">
+            Submit
+          </Button>
+        </Form>
+      </Card>
+    </Container>
   )
 }
 

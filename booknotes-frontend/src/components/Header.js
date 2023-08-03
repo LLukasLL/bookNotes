@@ -1,15 +1,37 @@
-const Header = ({ user, logout }) => {
+import Container from 'react-bootstrap/Container';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
+import NavDropdown from 'react-bootstrap/NavDropdown';
+
+const Header = ({ user, logout, setActiveBook }) => {
   return (
-    <div className="navbar sticky-top">
-      <div>Menu</div>
-      <div className="title-wrapper">
-      <span className="header-title">bookNotes</span>
-      </div>
-      <div>
-      {user && <button className="logout-btn" onClick={logout}>Logout</button>}
-      </div>
-    </div>
-  )
+    <Navbar expand="lg" className="bg-body-tertiary">
+      <Container>
+        <Navbar.Brand>bookNotes</Navbar.Brand>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav className="me-auto">
+            <Nav.Link onClick={() => setActiveBook(null)}>Home</Nav.Link>
+            <Nav.Link href="#link">Link</Nav.Link>
+            <NavDropdown title="Dropdown" id="basic-nav-dropdown">
+              <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
+              <NavDropdown.Item href="#action/3.2">
+                Another action
+              </NavDropdown.Item>
+              <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item href="#action/3.4">
+                Separated link
+              </NavDropdown.Item>
+            </NavDropdown>
+          </Nav>
+        </Navbar.Collapse>
+        <Nav>
+          {user && <Nav.Link onClick={logout}>Logout</Nav.Link>}
+        </Nav>
+      </Container>
+    </Navbar>
+  );
 }
 
-export default Header
+export default Header;
