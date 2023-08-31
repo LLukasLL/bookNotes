@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 
 const bookNoteSchema = mongoose.Schema({
   highlight: String,
+  origHighlight: String,
   comments: Array,
   keywords: Array,
   references: [{
@@ -11,6 +12,7 @@ const bookNoteSchema = mongoose.Schema({
   important: Boolean,
   actionTag: String,
   locationStart: Number,
+  origLocationStart: Number,
   locationEnd: Number,
   book: {
     type: mongoose.Schema.Types.ObjectId,

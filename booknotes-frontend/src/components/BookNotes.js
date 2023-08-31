@@ -6,7 +6,24 @@ import Container from "react-bootstrap/esm/Container"
 import bookNotesService from '../services/bookNote'
 import BookNote from './BookNote'
 
-const BookNotes = ({ activeBook, setErrorMessage, bookNotes, refresh, setRefresh }) => {
+import { useParams } from 'react-router-dom'
+
+const BookNotes = ({ activeBook, setErrorMessage, refresh, setRefresh }) => {
+  const [bookNotes, setBookNotes] = useState([])
+
+  const id = useParams()
+  
+  useEffect(() => {
+    async function getBookNotes() {
+      try {
+        const bookNotes = await bookNotesService.getNotesFromBook(id)
+        setBookNotes(bookNotes)
+      } catch (exception) {
+        setErrorMessage('request failed')
+      }
+    }
+    getBookNotes()
+  }, [])
 
   return (
       <Container>
@@ -22,6 +39,7 @@ const BookNotes = ({ activeBook, setErrorMessage, bookNotes, refresh, setRefresh
           {bookNotes
             .sort((a,b) => a.locationStart - b.locationStart)
             .map(bookNote => <BookNote
+              key={bookNote.id}
               bookNote={bookNote}
               refresh={refresh}
               setRefresh={setRefresh}

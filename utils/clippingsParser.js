@@ -1,4 +1,5 @@
-const inputString = `How to Think Like a Roman Emperor: The Stoic Philosophy of Marcus Aurelius (Donald Robertson)
+/*
+const testString = `How to Think Like a Roman Emperor: The Stoic Philosophy of Marcus Aurelius (Donald Robertson)
 - Ihre Markierung auf Seite 7 | bei Position 96-96 | Hinzugefügt am Freitag, 8. Mai 2020 17:23:15
 
 ancient Gnostic texts discovered at Nag Hammadi in Egypt,
@@ -17,9 +18,15 @@ How to Think Like a Roman Emperor: The Stoic Philosophy of Marcus Aurelius (Dona
 - Ihre Markierung auf Seite 11 | bei Position 164-165 | Hinzugefügt am Freitag, 8. Mai 2020 17:26:42
 
 rational emotive behavior therapy (REBT),
-==========`
+==========
+How to Think Like a Roman Emperor: The Stoic Philosophy of Marcus Aurelius (Donald Robertson)
+- Ihre Markierung auf Seite 32 | bei Position 478-481 | Hinzugefügt am Freitag, 8. Mai 2020 17:44:52
 
-const extractHighlights = () => {
+However, it can also be a bad thing if it becomes so pedantic or overly “academic” that it diverts us from the pursuit of virtue. Marcus learned the same attitude from his Stoic teachers. He repeatedly warned himself not to become distracted by reading too many books—thus wasting time on trifling issues in logic and metaphysics—but instead to remain focused on the practical goal of living wisely. After studying philosophy in Athens for about two
+==========`
+*/
+
+const extractHighlights = inputString => {
   const bookEntries = []
   const bookRegex = /(.+) \((.+)\)/
   const bookInfoRegex = /Seite (\d+) \| bei Position (\d+)-(\d+) \| Hinzugefügt am (.+)/
@@ -28,38 +35,48 @@ const extractHighlights = () => {
   let currentBookEntry = {}
   let lineInfo = 'book'
 
-  let lines = inputString.split('\n')
+  let lines
+  inputString.includes('\r\n')
+    ? lines = inputString.split('\r\n')
+    : lines = inputString.split('\n')
 
   for (const line of lines) {
-    if (line === '==========') {
+    if (line === '==========' || line.includes('==========')) {
       if (Object.keys(currentBookEntry).length !== 0) {
         bookEntries.push(currentBookEntry)
         currentBookEntry = {}
       }
       lineInfo = 'book'
     } else if (lineInfo === 'book') {
-      lineInfo = 'info'
-      const match = inputString.match(bookRegex)
+      const match = line.match(bookRegex)
       if (match) {
-        currentBookEntry.title = match[1]
+        currentBookEntry.book = match[1]
         currentBookEntry.author = match[2]
       }
+      lineInfo = 'info'
+    } else if (line === '' || line === null || line === '\r\n') {
+      lineInfo = 'highlight'
+    } else if (lineInfo === 'highlight' ) {
+      currentBookEntry.highlight = line
+      lineInfo = '=========='
     } else {
       const match = line.match(bookInfoRegex)
       if (match) {
         const [, page, start, end, date ] = match
         currentBookEntry.page = parseInt(page)
-        currentBookEntry.start = parseInt(start)
-        currentBookEntry.end = parseInt(end)
+        currentBookEntry.locationStart = parseInt(start)
+        currentBookEntry.locationEnd = parseInt(end)
         currentBookEntry.date = date
+        lineInfo = 'empty'
       } else {
         const matchShort = line.match(bookInfoRegexShort)
         if (matchShort) {
           const [, page, start, date ] = matchShort
           currentBookEntry.page = parseInt(page)
-          currentBookEntry.start = parseInt(start)
-          currentBookEntry.end = parseInt(start)
+          currentBookEntry.locationStart = parseInt(start)
+          currentBookEntry.locationEnd = parseInt(start)
           currentBookEntry.date = date
+          lineInfo = 'empty'
         }
       }
     }
@@ -69,4 +86,4 @@ const extractHighlights = () => {
 
 module.exports = extractHighlights
 
-
+// console.log(extractHighlights(testString))

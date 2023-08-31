@@ -117,7 +117,7 @@ html, body {
   display: grid;
   background-color: white;
   grid-template-columns: 1fr;
-  grid-template-rows: 50px auto 40px;
+  grid-template-rows: auto auto auto;
   border-radius: 10px;
   border-left: 10px solid black;
 }

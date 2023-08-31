@@ -2,7 +2,9 @@ const mongoose = require('mongoose')
 
 const bookSchema = mongoose.Schema({
   title: String,
+  origTitle: String,
   author: String,
+  origAuthor: String,
   comments: String,
   goodreads: String,
   /*

@@ -1,27 +1,39 @@
 import { useState, useEffect } from 'react'
+import {
+  BrowserRouter as Router,
+  Routes, Route, Link,
+  useParams, useNavigate, redirect
+} from 'react-router-dom'
 
 import ErrMess from './components/ErrMess'
 import Header from './components/Header'
 import LoginForm from './components/Login'
 import Book from "./components/Book"
 import BookNotes from "./components/BookNotes"
+import Register from './components/Register'
+
 import bookService from './services/book'
 import bookNotesService from './services/bookNote'
-
 import loginService from './services/login'
+import userService from './services/user'
 import auth from './services/auth'
 
 import Container from "react-bootstrap/esm/Container"
 
 function App() {
-  const [username, setUsername] = useState('') 
+  const [username, setUsername] = useState('')
+  const [name, setName] = useState('')
   const [password, setPassword] = useState('') 
+  const [confirmPassword, setConfirmPassword] = useState('')
   const [user, setUser] = useState(null)
   const [token, setToken] = useState('')
   const [errorMessage, setErrorMessage] = useState(null)
   const [refresh, setRefresh] = useState(0)
   const [activePage, setActivePage] = useState(null)
-
+  
+  const [activeBook, setActiveBook] = useState(null)
+  const [books, setBooks] = useState([])
+  const [bookNotes, setBookNotes] = useState([])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedInAppUser')
@@ -37,9 +49,6 @@ function App() {
   }, [errorMessage])
 
 
-  const [activeBook, setActiveBook] = useState(null)
-  const [books, setBooks] = useState([])
-  const [bookNotes, setBookNotes] = useState([])
 
   useEffect(() => {
     async function getBooks() {
@@ -60,42 +69,19 @@ function App() {
       }
     }
     setBookNotes([])
-    activeBook === null ? getBooks() : getBookNotes()
-  }, [activeBook, refresh])
+    activeBook === null && user !== null ? getBooks() : getBookNotes()
+  }, [activeBook, refresh, user])
 
-  const loginForm = () => {    
-    return (
-        <LoginForm
-          username={username}
-          password={password}
-          handleUsernameChange={({ target }) => setUsername(target.value)}
-          handlePasswordChange={({ target }) => setPassword(target.value)}
-          handleSubmit={handleLogin}
-        />
-  )}
-  const content = () => {
-    return (
-    <div id='content-wrapper' className='Content'>
-      <Container>
-        <div className="books-container">
-          { activeBook === null ? books.map(book => <Book key={book.id} book={book} setActiveBook={setActiveBook}/>) : null }
-        </div>
-      </Container>
-      {activeBook && <BookNotes
-        activeBook={activeBook}
-        setErrorMessage={setErrorMessage}
-        bookNotes={bookNotes}
-        refresh={refresh}
-        setRefresh={setRefresh}
-      />}
-    </div>
-    )
-  }
   const logout = () => {
-    setUser(null)
+    setBooks(null)
+    setBookNotes(null)
+    setActiveBook(null)
+    setActivePage(null)
     setToken('')
+    setUser(null)
     auth.setToken('')
     window.localStorage.removeItem('loggedInAppUser')
+    redirect('/login')
   }
 
   const handleLogin = async (event) => {
@@ -105,17 +91,34 @@ function App() {
       window.localStorage.setItem( 'loggedInAppUser', JSON.stringify(user) )
       setToken(user.token)
       auth.setToken(user.token)
-      console.log('Token has been set: ', user.token)
       setUser(user)
       setUsername('')
       setPassword('')
+      redirect('/books')
     } catch (exception) {
       setErrorMessage('Wrong credentials')
       setTimeout(() => {
         setErrorMessage(null)
       }, 500)
     }
-  } 
+  }
+
+  const handleRegister = async e => {
+    e.preventDefault()
+    try {
+      const newUser = {
+        username: username,
+        name: name,
+        password: password
+      }
+      await userService.create(newUser)
+      redirect('/login')
+    } catch (exception) {
+      setErrorMessage(exception)
+      setTimeout(() => setErrorMessage(null), 500)
+    }
+  }
+
   return (
     <div className="App">
       <link
@@ -130,7 +133,53 @@ function App() {
         setActiveBook={setActiveBook}
       />
       <ErrMess errorMessage={errorMessage}/>
-      {user === null ? loginForm() : content()}
+      <Router>
+        {user ? null : redirect('/login')}
+        <Routes>
+          <Route path='/login' element={
+            <LoginForm
+              username={username}
+              password={password}
+              handleUsernameChange={({ target }) => setUsername(target.value)}
+              handlePasswordChange={({ target }) => setPassword(target.value)}
+              handleSubmit={handleLogin}
+              setActivePage={setActivePage}
+            />}
+          />
+          <Route path='/register' element={
+            <Register
+              username={username}
+              name={name}
+              password={password}
+              confirmPassword={confirmPassword}
+              handleUsernameChange={({ target }) => setUsername(target.value)}
+              handleNameChange={({ target }) => setName(target.value)}
+              handlePasswordChange={({ target }) => setPassword(target.value)}
+              handleConfirmPasswordChange={({ target }) => setConfirmPassword(target.value)}
+              handleSubmit={handleRegister}
+              setActivePage={setActivePage}
+            />}
+          />
+          <Route path='/books' 
+            element={<div id='content-wrapper' className='Content'>
+              <Container>
+                <div className="books-container">
+                  { activeBook === null && books !== null ? books.map(book => <Book key={book.id} book={book} setActiveBook={setActiveBook}/>) : null }
+                </div>
+              </Container>
+            </div>}
+          />
+          <Route path='/booknotes/:id' 
+            element={<BookNotes
+              activeBook={activeBook}
+              setErrorMessage={setErrorMessage}
+              bookNotes={bookNotes}
+              refresh={refresh}
+              setRefresh={setRefresh}
+            />}
+          />
+        </Routes>
+      </Router>
       {/* <Footer/> */}
       </div>
   )

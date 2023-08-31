@@ -2,13 +2,17 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Card from 'react-bootstrap/Card';
 import Container from 'react-bootstrap/esm/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import { redirect } from 'react-router-dom';
 
 const LoginForm = ({
   handleSubmit,
   handleUsernameChange,
   handlePasswordChange,
   username,
-  password
+  password,
+  setActivePage
 }) => {
   return (
     <Container>
@@ -31,9 +35,10 @@ const LoginForm = ({
               onChange={handlePasswordChange}
             />
           </Form.Group>
-          <Button variant="primary" type="submit">
-            Submit
-          </Button>
+          <Row>
+            <Col md='auto'><Button variant="primary" type="submit">Submit</Button></Col>
+            <Col md='auto'><Button variant="primary" onClick={() => redirect('/register')}>Register</Button></Col>
+          </Row>
         </Form>
       </Card>
     </Container>
