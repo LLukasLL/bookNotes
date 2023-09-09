@@ -5,14 +5,14 @@ html, body {
   -moz-osx-font-smoothing: grayscale;
   margin: 0px;
   padding: 0px;
-  min-height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
 }
 
 .App {
   background-color: #e9ecef;
-  height: 100vh;
+  min-height: 100vh;
 }
 
 .error {
@@ -111,14 +111,13 @@ html, body {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
   gap: 15px;
-  margin: 15px;
 }
 
 .book-card {
   display: grid;
   background-color: white;
   grid-template-columns: 1fr;
-  grid-template-rows: 50px auto 40px;
+  grid-template-rows: auto auto auto;
   border-radius: 10px;
   border-left: 10px solid black;
 }

@@ -26,7 +26,7 @@ loginRouter.post('/', async (request, response) => {
     userForToken,
     // eslint-disable-next-line no-undef
     process.env.SECRET,
-    { expiresIn: 60*60 }
+    // { expiresIn: 60*60 }
   )
 
   response

@@ -2,7 +2,9 @@ const mongoose = require('mongoose')
 
 const bookSchema = mongoose.Schema({
   title: String,
+  origTitle: String,
   author: String,
+  origAuthor: String,
   comments: String,
   goodreads: String,
   /*
@@ -27,6 +29,6 @@ bookSchema.set('toJSON', {
   }
 })
 
-const User = mongoose.model('User', bookSchema)
+const User = mongoose.model('Book', bookSchema)
 
 module.exports = User

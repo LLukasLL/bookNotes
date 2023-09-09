@@ -6,21 +6,25 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { useNavigate } from 'react-router-dom';
 
-const LoginForm = ({
+const RegisterForm = ({
   handleSubmit,
   handleUsernameChange,
+  handleNameChange,
   handlePasswordChange,
+  handleConfirmPasswordChange,
   username,
+  name,
   password,
+  confirmPassword,
   setActivePage
 }) => {
 
   const navigate = useNavigate()
-
+  
   return (
     <Container>
       <Card style={{ width: '1 rem', padding: '24px' }}>
-        <h2>Login</h2>
+        <h2>Register</h2>
         <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3">
             <Form.Control 
@@ -28,6 +32,14 @@ const LoginForm = ({
               placeholder="username"
               value={username}
               onChange={handleUsernameChange}
+            />
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Control 
+              type="text" 
+              placeholder="name"
+              value={name}
+              onChange={handleNameChange}
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="formBasicPassword">
@@ -38,9 +50,17 @@ const LoginForm = ({
               onChange={handlePasswordChange}
             />
           </Form.Group>
+          <Form.Group className="mb-3" controlId="formBasicPassword">
+            <Form.Control
+              type='password'
+              placeholder='confirm password'
+              value={confirmPassword}
+              onChange={handleConfirmPasswordChange}
+            />
+          </Form.Group>
           <Row>
             <Col md='auto'><Button variant="primary" type="submit">Submit</Button></Col>
-            <Col md='auto'><Button variant="primary" onClick={() => navigate('/register')}>Register</Button></Col>
+            <Col md='auto'><Button onClick={() => navigate('/login')}>Cancel</Button></Col>
           </Row>
         </Form>
       </Card>
@@ -48,4 +68,4 @@ const LoginForm = ({
   )
 }
 
-export default LoginForm
+export default RegisterForm 

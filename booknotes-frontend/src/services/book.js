@@ -5,8 +5,12 @@ import auth from "./auth";
 const route = baseUrl + '/api/books'
 
 const getAll = async () => {
-  const config = auth.getConfig()
-  const req = await axios.get(route, config)
+  const req = await axios.get(route, auth.getConfig())
+  return req.data
+}
+
+const get = async (id) => {
+  const req = await axios.get(`${ route }/${id}`, auth.getConfig())
   return req.data
 }
 
@@ -28,6 +32,7 @@ const del = (id) => {
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
   getAll,
+  get,
   create,
   update,
   del

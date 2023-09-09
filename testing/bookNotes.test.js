@@ -36,6 +36,8 @@ describe('bookNotes api test', () => {
       references: [],
       important: true,
       actionTag: '',
+      locationStart: 10,
+      locationEnd: 12,
       book: booksFromDB[0].id
     }
 
@@ -98,6 +100,8 @@ describe('bookNotes api test', () => {
       references: [],
       important: true,
       actionTag: '',
+      locationStart: 14,
+      locationEnd: 16,
       book: booksFromDB[0].id
     }
 
