@@ -4,15 +4,17 @@ import Button from 'react-bootstrap/esm/Button'
 import Container from "react-bootstrap/esm/Container"
 
 import bookNotesService from '../services/bookNote'
+import bookService from '../services/book'
 import BookNote from './BookNote'
 
 import { useParams } from 'react-router-dom'
 
-const BookNotes = ({ activeBook, setErrorMessage, refresh, setRefresh }) => {
+const BookNotes = ({ user, activeBook, setErrorMessage, refresh, setRefresh }) => {
   const [bookNotes, setBookNotes] = useState([])
+  const [book, setBook] = useState([])
 
-  const id = useParams()
-  
+  const { id } = useParams()
+
   useEffect(() => {
     async function getBookNotes() {
       try {
@@ -22,7 +24,18 @@ const BookNotes = ({ activeBook, setErrorMessage, refresh, setRefresh }) => {
         setErrorMessage('request failed')
       }
     }
-    getBookNotes()
+    async function getBook() {
+      try{
+        const book = await bookService.get(id)
+        setBook(book)
+      } catch {
+        setErrorMessage('request failed')
+      }
+    }
+    if (user !== null && user !== 'not checked') {
+      getBook()
+      getBookNotes()
+    }
   }, [])
 
   return (
@@ -30,10 +43,10 @@ const BookNotes = ({ activeBook, setErrorMessage, refresh, setRefresh }) => {
         <Accordion defaultActiveKey="0" flush>
           <Accordion.Item eventKey="1">
             <Accordion.Header>
-              <h2>{activeBook.title + ' - ' + activeBook.author}</h2>
+              {book ? <h2>{book.title + ' - ' + book.author}</h2> : null}
             </Accordion.Header>
             <Accordion.Body>
-              {activeBook.comments}
+              {book.comments}
             </Accordion.Body>
           </Accordion.Item>
           {bookNotes

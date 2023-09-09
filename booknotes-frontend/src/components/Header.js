@@ -8,12 +8,15 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import clippingsService from '../services/clippings'
 
 const Header = ({ user, logout, setActiveBook }) => {
   const [file, setFile] = useState(null)
   const [clippingsString, setClippingsString] = useState(null)
+
+  const navigate = useNavigate()
   
   const handleFileChange = ({ target }) => setFile(target.files[0])
 
@@ -60,8 +63,8 @@ const Header = ({ user, logout, setActiveBook }) => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            <Nav.Link onClick={() => setActiveBook(null)}>Home</Nav.Link>
-            <Nav.Link href="#link">Link</Nav.Link>
+            <Nav.Link onClick={() => navigate('/')}>Home</Nav.Link>
+            <Nav.Link onClick={() => navigate('/books')}>Books</Nav.Link>
             <NavDropdown title="Dropdown" id="basic-nav-dropdown">
               <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
               <NavDropdown.Item href="#action/3.2">

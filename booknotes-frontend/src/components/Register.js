@@ -4,7 +4,7 @@ import Card from 'react-bootstrap/Card';
 import Container from 'react-bootstrap/esm/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import { redirect } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const RegisterForm = ({
   handleSubmit,
@@ -18,6 +18,9 @@ const RegisterForm = ({
   confirmPassword,
   setActivePage
 }) => {
+
+  const navigate = useNavigate()
+  
   return (
     <Container>
       <Card style={{ width: '1 rem', padding: '24px' }}>
@@ -57,7 +60,7 @@ const RegisterForm = ({
           </Form.Group>
           <Row>
             <Col md='auto'><Button variant="primary" type="submit">Submit</Button></Col>
-            <Col md='auto'><Button onClick={() => redirect('/login')}>Cancel</Button></Col>
+            <Col md='auto'><Button onClick={() => navigate('/login')}>Cancel</Button></Col>
           </Row>
         </Form>
       </Card>
