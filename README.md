@@ -1,21 +1,20 @@
 # bookNotes
-### Grundidee:
-App erlaubt die Verwaltung aller Kindle Notizen und die Interaktion und Auseinandersetzung mit diesen.
-### Umgesetzte Teile:
-Backend mit NodeJS
-- MongoDB als Datenbank: Templates für alle DatenObjekte implementiert
-- Express als Server-Datenbank: komplettes Set an Routen umgesetzt für User, Login, Buch und Notiz
-- Testing mit den Frameworks Jest und Supertest: Beispieldatensätze werden zum Testen in die Datenbank gespeichert und alle Routen werden getestet
-- User-Authentifizierung mittels Token, Integration mit Middleware
-- Middleware für Fehlermanagement
-Frontend mit React:
-- Login und Token-Authentifizierung
-- Übersichtseite für Bücher
-- Erster Entwurf für die Interaktion mit den Buchnotizen
-
-### Umsetzung ausstehend:
-- Frontend-Formulare für die Bearbeitung aller Datenobjekte
-- Ansprechenderes Design
-- Upload und Abgleich mit Notizen-Textdatei aus Kindle
-
-<img width="991" alt="Bildschirmfoto 2023-07-15 um 16 26 41" src="https://github.com/LLukasLL/bookNotes/assets/109357711/f243ce3e-d79a-45b5-a01f-29f7205222ae">
+## Main Description:
+Import your Kindle my Clippings File and Work with the marked sections from your e-books
+## Features
+- Complete MERN app
+- Testing for all Routes
+- Login with Bearer-Tokenization
+- Upload Kindle Clippings File
+### Features-Log
+- Complete Implementation of users, books and notes
+- Usage of react-router
+- All Highlights/BookNotes are customizable
+### Features To Do
+- Make clippings-algorithm differentiate between users
+- Error Message System => Middleware
+- Creation of books and highlights
+- Upload Book cover
+- Collections of highlights from different books
+- Book lists => way of tracking reading / notetaking work
+- Communication between users feature => maybe personal info page and chat feature
