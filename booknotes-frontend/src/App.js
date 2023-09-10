@@ -7,6 +7,7 @@ import {
 } from 'react-router-dom'
 
 import ErrMess from './components/ErrMess'
+import Message from './components/Message'
 import Header from './components/Header'
 import LoginForm from './components/Login'
 import Books from "./components/Books"
@@ -29,12 +30,15 @@ function App() {
   const [user, setUser] = useState('not checked')
   const [token, setToken] = useState('')
   const [errorMessage, setErrorMessage] = useState(null)
+  const [message, setMessage] = useState(null)
   const [refresh, setRefresh] = useState(0)
   const [activePage, setActivePage] = useState(null)
+  const [loading, setLoading] = useState(null)
   
   const [activeBook, setActiveBook] = useState(null)
   const [books, setBooks] = useState([])
   const [bookNotes, setBookNotes] = useState([])
+
 
   
   useEffect(() => {
@@ -74,7 +78,6 @@ function App() {
       setUser(user)
       setUsername('')
       setPassword('')
-      redirect('/books')
     } catch (exception) {
       setErrorMessage('Wrong credentials')
       setTimeout(() => {
@@ -112,8 +115,10 @@ function App() {
           user={user}
           logout={logout}
           setActiveBook={setActiveBook}
+          setMessage={setMessage}
         />
         <ErrMess errorMessage={errorMessage}/>
+        <Message message={message} setMessage={setMessage}/>
         <Routes>
           <Route path='/' element={
             user !== null && user !== 'not checked' ? <Navigate replace to="/books" /> : <Navigate replace to="/login" />
@@ -156,6 +161,7 @@ function App() {
           />
           <Route path='/booknotes/:id' 
             element={<BookNotes
+              user={user}
               activeBook={activeBook}
               setErrorMessage={setErrorMessage}
               bookNotes={bookNotes}

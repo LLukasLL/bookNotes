@@ -11,8 +11,10 @@ Import your Kindle my Clippings File and Work with the marked sections from your
 - Usage of react-router
 - All Highlights/BookNotes are customizable
 ### Features To Do
+- move all possible functions and States to login and register components
 - Make clippings-algorithm differentiate between users
-- Error Message System => Middleware
+- Error Message System
+- Upload Message System
 - Creation of books and highlights
 - Upload Book cover
 - Collections of highlights from different books

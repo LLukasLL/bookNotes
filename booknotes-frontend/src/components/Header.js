@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router-dom';
 
 import clippingsService from '../services/clippings'
 
-const Header = ({ user, logout, setActiveBook }) => {
+const Header = ({ user, logout, setActiveBook, loading, setLoading, setMessage }) => {
   const [file, setFile] = useState(null)
   const [clippingsString, setClippingsString] = useState(null)
 
@@ -26,9 +26,11 @@ const Header = ({ user, logout, setActiveBook }) => {
       // { clippingsString: 'the File Content' }
       let reader = new FileReader()
       reader.onload = async e => {
+        setMessage('Upload and Database Update in progress')
         setClippingsString(e.target.result)        
         const uploadObj = { clippingsString: e.target.result }
         await clippingsService.upload(uploadObj)
+        setMessage(null)
       }
       reader.readAsText(file)
     }

@@ -15,8 +15,7 @@ const RegisterForm = ({
   username,
   name,
   password,
-  confirmPassword,
-  setActivePage
+  confirmPassword
 }) => {
 
   const navigate = useNavigate()

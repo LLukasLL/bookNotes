@@ -9,6 +9,7 @@ const BookNote = require('../models/BookNote')
 const extractHighlights = require('../utils/clippingsParser')
 
 clippingsRouter.post('/', async (req, res) => {
+  // handle Post request
   // eslint-disable-next-line no-undef
   const decodedToken = jwt.verify(req.token, process.env.SECRET)
   if (!decodedToken.id) {
@@ -19,12 +20,17 @@ clippingsRouter.post('/', async (req, res) => {
     content: req.body.clippingsString,
     user: user.id
   })
+  // save Clippings String to DB
   const result = await newClippingstxt.save()
+
+  // parse Clippings String to Objects
   const importedNotes = extractHighlights(req.body.clippingsString)
-  console.log(importedNotes)
-  // save new Notes and Books to DB:
-  const books = await Book.find({})
-  const bookNotes = await BookNote.find({})
+
+  // create hash Objects for saving existing books and bookNotes
+  const books = await Book.find({ user: user.id })
+  console.log('# books for this user:', books.length)
+  const bookNotes = await BookNote.find({ user: user.id })
+  console.log('# bookNotes for this user: ', bookNotes.length)
   const booksHash = {}
   books.map(book => {
     booksHash[book.origTitle] = {
@@ -44,6 +50,7 @@ clippingsRouter.post('/', async (req, res) => {
     }
   }
 
+  // check if book already exists for this user, if not save the new Book to MongoDB
   const handleBook = async (note) => {
     // save book to db
     const saveBook = async () => {
@@ -60,14 +67,16 @@ clippingsRouter.post('/', async (req, res) => {
         id: result._id.toHexString()
       }
     }
-    if (!booksHash[note.book]) {
+    if (!booksHash[note.book] ) {
       await saveBook()
     } else if (booksHash[note.book].origAuthor !== note.author) {
       await saveBook()
     }
   }
+
+  // check if bookNote already exists for this user, if not save the new BookNote to MongoDB
   const handleNote = async note => {
-    const book = await Book.find({ origTitle: note.book, origAuthor: note.author })
+    const book = await Book.find({ origTitle: note.book, origAuthor: note.author, user: user.id })
     const bookID = book[0]._id
     const newNote = new BookNote({
       highlight: note.highlight,
@@ -98,6 +107,7 @@ clippingsRouter.post('/', async (req, res) => {
       }
     }
   }
+  console.log('finished')
   res.status(201).json(result)
 })
 
