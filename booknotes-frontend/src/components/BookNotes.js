@@ -23,7 +23,6 @@ const BookNotes = ({ user, activeBook, setErrorMessage, refresh, setRefresh }) =
       } catch (exception) {
         setErrorMessage('request failed')
       }
-      console.log(id)
     }
     async function getBook() {
       try{
@@ -37,8 +36,6 @@ const BookNotes = ({ user, activeBook, setErrorMessage, refresh, setRefresh }) =
       getBook()
       getBookNotes()
     }
-    console.log('book: ', book)
-    console.log('bookNotes: ', bookNotes)
   }, [user])
 
   return (
