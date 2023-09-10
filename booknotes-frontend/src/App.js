@@ -39,7 +39,6 @@ function App() {
   const [books, setBooks] = useState([])
   const [bookNotes, setBookNotes] = useState([])
 
-
   
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedInAppUser')
@@ -116,9 +115,10 @@ function App() {
           logout={logout}
           setActiveBook={setActiveBook}
           setMessage={setMessage}
+          setLoading={setLoading}
         />
         <ErrMess errorMessage={errorMessage}/>
-        <Message message={message} setMessage={setMessage}/>
+        <Message message={message} setMessage={setMessage} loading={loading}/>
         <Routes>
           <Route path='/' element={
             user !== null && user !== 'not checked' ? <Navigate replace to="/books" /> : <Navigate replace to="/login" />

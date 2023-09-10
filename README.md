@@ -6,15 +6,15 @@ Import your Kindle my Clippings File and Work with the marked sections from your
 - Testing for all Routes
 - Login with Bearer-Tokenization
 - Upload Kindle Clippings File
-### Features-Log
-- Complete Implementation of users, books and notes
+- Clippings-algorithm uploads all notes from .txt for each user and categorizes them into books
 - Usage of react-router
 - All Highlights/BookNotes are customizable
-### Features To Do
+- Message System for progress of uploaded Clippings.txt
+### Bugfix Log
+### Features / Bugfixes To Do
+- Refine Upload Message System
 - move all possible functions and States to login and register components
-- Make clippings-algorithm differentiate between users
 - Error Message System
-- Upload Message System
 - Creation of books and highlights
 - Upload Book cover
 - Collections of highlights from different books

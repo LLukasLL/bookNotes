@@ -18,7 +18,7 @@ const Books = ({ user, setErrorMessage }) => {
       }
     }
     if (user !== null && user !== 'not checked') getBooks()
-  }, [])
+  }, [user])
 
   return (
       <Container>
