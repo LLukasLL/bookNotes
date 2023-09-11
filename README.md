@@ -10,10 +10,11 @@ Import your Kindle my Clippings File and Work with the marked sections from your
 - Usage of react-router
 - All Highlights/BookNotes are customizable
 - Message System for progress of uploaded Clippings.txt
-### Bugfix Log
-### Features / Bugfixes To Do
-- Refine Upload Message System
+### Done: Bugfix / little changes
 - move all possible functions and States to login and register components
+- Refine Upload Message System
+### To Do: Features / Bugfixes
+- make BookNote component more simple
 - Error Message System
 - Creation of books and highlights
 - Upload Book cover

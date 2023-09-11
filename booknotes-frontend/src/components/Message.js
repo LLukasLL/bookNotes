@@ -1,4 +1,3 @@
-import { useEffect } from "react"
 import Spinner from 'react-bootstrap/Spinner'
 
 const Message = ({ message, setMessage, loading }) => {

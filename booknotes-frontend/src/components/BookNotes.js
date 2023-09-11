@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import Accordion from 'react-bootstrap/Accordion'
-import Button from 'react-bootstrap/esm/Button'
 import Container from "react-bootstrap/esm/Container"
 
 import bookNotesService from '../services/bookNote'

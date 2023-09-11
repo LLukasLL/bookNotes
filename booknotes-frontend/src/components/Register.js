@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Card from 'react-bootstrap/Card';
@@ -6,25 +8,44 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { useNavigate } from 'react-router-dom';
 
+import userService from '../services/user'
+
 const RegisterForm = ({
-  handleSubmit,
-  handleUsernameChange,
-  handleNameChange,
-  handlePasswordChange,
-  handleConfirmPasswordChange,
-  username,
-  name,
-  password,
-  confirmPassword
+  setErrorMessage
 }) => {
+  const [username, setUsername] = useState('')
+  const [name, setName] = useState('')
+  const [password, setPassword] = useState('') 
+  const [confirmPassword, setConfirmPassword] = useState('')
 
   const navigate = useNavigate()
+
+  const handleUsernameChange=({ target }) => setUsername(target.value)
+  const handleNameChange=({ target }) => setName(target.value)
+  const handlePasswordChange=({ target }) => setPassword(target.value)
+  const handleConfirmPasswordChange=({ target }) => setConfirmPassword(target.value)
   
+  const handleRegister = async e => {
+    e.preventDefault()
+    try {
+      const newUser = {
+        username: username,
+        name: name,
+        password: password
+      }
+      await userService.create(newUser)
+      navigate('/login')
+    } catch (exception) {
+      setErrorMessage(exception)
+      setTimeout(() => setErrorMessage(null), 500)
+    }
+  }
+
   return (
     <Container>
       <Card style={{ width: '1 rem', padding: '24px' }}>
         <h2>Register</h2>
-        <Form onSubmit={handleSubmit}>
+        <Form onSubmit={handleRegister}>
           <Form.Group className="mb-3">
             <Form.Control 
               type="username" 

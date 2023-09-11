@@ -14,19 +14,10 @@ import Books from "./components/Books"
 import BookNotes from "./components/BookNotes"
 import Register from './components/Register'
 
-import bookService from './services/book'
-import bookNotesService from './services/bookNote'
-import loginService from './services/login'
 import userService from './services/user'
 import auth from './services/auth'
 
-import Container from "react-bootstrap/esm/Container"
-
 function App() {
-  const [username, setUsername] = useState('')
-  const [name, setName] = useState('')
-  const [password, setPassword] = useState('') 
-  const [confirmPassword, setConfirmPassword] = useState('')
   const [user, setUser] = useState('not checked')
   const [token, setToken] = useState('')
   const [errorMessage, setErrorMessage] = useState(null)
@@ -67,39 +58,7 @@ function App() {
     redirect('/login')
   }
 
-  const handleLogin = async (event) => {
-    event.preventDefault()
-    try {
-      const user = await loginService.login({ username, password })
-      window.localStorage.setItem( 'loggedInAppUser', JSON.stringify(user) )
-      setToken(user.token)
-      auth.setToken(user.token)
-      setUser(user)
-      setUsername('')
-      setPassword('')
-    } catch (exception) {
-      setErrorMessage('Wrong credentials')
-      setTimeout(() => {
-        setErrorMessage(null)
-      }, 500)
-    }
-  }
 
-  const handleRegister = async e => {
-    e.preventDefault()
-    try {
-      const newUser = {
-        username: username,
-        name: name,
-        password: password
-      }
-      await userService.create(newUser)
-      redirect('/login')
-    } catch (exception) {
-      setErrorMessage(exception)
-      setTimeout(() => setErrorMessage(null), 500)
-    }
-  }
   
   return (
     <div className="App">
@@ -127,28 +86,16 @@ function App() {
             <div style={{padding: 0}}>
               {user !== null && user !== 'not checked' ? <Navigate replace to="/books" /> : null}
               <LoginForm
-                username={username}
-                password={password}
-                handleUsernameChange={({ target }) => setUsername(target.value)}
-                handlePasswordChange={({ target }) => setPassword(target.value)}
-                handleSubmit={handleLogin}
-                setActivePage={setActivePage}
+                user={user}
+                setUser={setUser}
+                setErrorMessage={setErrorMessage}
               />
             </div>
             }
           />
           <Route path='/register' element={
             <Register
-              username={username}
-              name={name}
-              password={password}
-              confirmPassword={confirmPassword}
-              handleUsernameChange={({ target }) => setUsername(target.value)}
-              handleNameChange={({ target }) => setName(target.value)}
-              handlePasswordChange={({ target }) => setPassword(target.value)}
-              handleConfirmPasswordChange={({ target }) => setConfirmPassword(target.value)}
-              handleSubmit={handleRegister}
-              setActivePage={setActivePage}
+              setErrorMessage={setErrorMessage}
             />}
           />
           <Route path='/books' 
@@ -164,7 +111,6 @@ function App() {
               user={user}
               activeBook={activeBook}
               setErrorMessage={setErrorMessage}
-              bookNotes={bookNotes}
               refresh={refresh}
               setRefresh={setRefresh}
             />}
