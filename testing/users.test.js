@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const supertest = require('supertest')
 
 // Reihenfolge geändert, bei Problemen zurückgehen auf Tutorial
-// const User = require('../models/User')
+const User = require('../models/User')
 const helper = require('../utils/testHelp')
 const app = require('../app')
 
@@ -55,6 +55,31 @@ describe('user creation and login', () => {
     const usersAtEnd = await helper.usersInDb()
 
     expect(usersAtEnd).toEqual(usersAtStart)
+  })
+  test('update password works with correct credentials', async () => {
+    const usersAtStart = await helper.usersInDb()
+    const userAtStart = await User.findById( usersAtStart[0].id )
+    const token = await helper.login(api)
+    const res = await api
+      .put(`/api/users/${usersAtStart[0].id}`)
+      .send({ password: 'mySecretPassword', newPassword: 'Williwillswissen' })
+      .set('Authorization', `Bearer ${token}`)
+      .expect(200)
+    const pwIsNew = res.body.passwordHash !== userAtStart.passwordHash
+    expect(pwIsNew).toBe(true)
+  })
+  test('update password fails with incorrect credentials', async () => {
+    const usersAtStart = await helper.usersInDb()
+    const userAtStart = await User.findById( usersAtStart[0].id )
+    const token = await helper.login(api)
+    await api
+      .put(`/api/users/${usersAtStart[0].id}`)
+      .send({ password: 'wrongPassword', newPassword: 'Williwillswissen' })
+      .set('Authorization', `Bearer ${token}`)
+      .expect(401)
+    const userAtEnd = await User.findById( usersAtStart[0].id )
+    const pwIsNew = userAtEnd.passwordHash !== userAtStart.passwordHash
+    expect(pwIsNew).toBe(false)
   })
 })
 afterAll(async () => {

@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
 import {
   BrowserRouter as Router,
-  Routes, Route, Link,
-  useParams, useNavigate, redirect,
+  Routes, 
+  Route,
   Navigate
 } from 'react-router-dom'
 
@@ -13,6 +13,7 @@ import LoginForm from './components/Login'
 import Books from "./components/Books"
 import BookNotes from "./components/BookNotes"
 import Register from './components/Register'
+import UserPage from './components/UserPage'
 
 import userService from './services/user'
 import auth from './services/auth'
@@ -55,7 +56,6 @@ function App() {
     setUser(null)
     auth.setToken('')
     window.localStorage.removeItem('loggedInAppUser')
-    redirect('/login')
   }
 
 
@@ -109,10 +109,15 @@ function App() {
           <Route path='/booknotes/:id' 
             element={<BookNotes
               user={user}
-              activeBook={activeBook}
               setErrorMessage={setErrorMessage}
               refresh={refresh}
               setRefresh={setRefresh}
+            />}
+          />
+          <Route path='/user' 
+            element={<UserPage
+              user={user}
+              setErrorMessage={setErrorMessage}
             />}
           />
         </Routes>

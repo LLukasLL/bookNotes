@@ -28,9 +28,7 @@ clippingsRouter.post('/', async (req, res) => {
 
   // create hash Objects for saving existing books and bookNotes
   const books = await Book.find({ user: user.id })
-  console.log('# books for this user:', books.length)
   const bookNotes = await BookNote.find({ user: user.id })
-  console.log('# bookNotes for this user: ', bookNotes.length)
   const booksHash = {}
   books.map(book => {
     booksHash[book.origTitle] = {

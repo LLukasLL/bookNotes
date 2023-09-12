@@ -14,8 +14,11 @@ Import your Kindle my Clippings File and Work with the marked sections from your
 - move all possible functions and States to login and register components
 - Refine Upload Message System
 ### To Do: Features / Bugfixes
+- Display logged in user in Header
+- use react Bootstrap Alert for Message system
 - make BookNote component more simple
-- Error Message System
+- Fix Error Message System
+- Update Book Component
 - Creation of books and highlights
 - Upload Book cover
 - Collections of highlights from different books

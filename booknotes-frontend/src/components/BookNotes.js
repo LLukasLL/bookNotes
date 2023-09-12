@@ -8,7 +8,7 @@ import BookNote from './BookNote'
 
 import { useParams } from 'react-router-dom'
 
-const BookNotes = ({ user, activeBook, setErrorMessage, refresh, setRefresh }) => {
+const BookNotes = ({ user, setErrorMessage, refresh, setRefresh }) => {
   const [bookNotes, setBookNotes] = useState([])
   const [book, setBook] = useState([])
 
