@@ -8,6 +8,11 @@ const Header = ({ user, logout, setMessage }) => {
 
   const navigate = useNavigate()
 
+  const handleLogout = () => {
+    logout()
+    navigate('/')
+  }
+
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
       <Container>
@@ -22,7 +27,7 @@ const Header = ({ user, logout, setMessage }) => {
             { user && <Nav.Item style={{ paddingRight: '20vh'}}>logged in as '{user.username}'</Nav.Item>}
         </Navbar.Collapse>
         <Nav>
-          {user && <Nav.Link onClick={logout}>Logout</Nav.Link>}
+          {user && <Nav.Link onClick={handleLogout}>Logout</Nav.Link>}
         </Nav>
       </Container>
     </Navbar>

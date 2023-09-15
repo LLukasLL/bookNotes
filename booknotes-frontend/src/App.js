@@ -3,7 +3,8 @@ import {
   BrowserRouter as Router,
   Routes, 
   Route,
-  Navigate
+  Navigate,
+  useNavigate
 } from 'react-router-dom'
 
 import ErrMess from './components/ErrMess'
@@ -23,13 +24,7 @@ function App() {
   const [errorMessage, setErrorMessage] = useState(null)
   const [message, setMessage] = useState(null)
   const [refresh, setRefresh] = useState(0)
-  const [activePage, setActivePage] = useState(null)
   const [loading, setLoading] = useState(null)
-  
-  const [activeBook, setActiveBook] = useState(null)
-  const [books, setBooks] = useState([])
-  const [bookNotes, setBookNotes] = useState([])
-
   
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedInAppUser')
@@ -47,18 +42,12 @@ function App() {
   }, [errorMessage])
 
   const logout = () => {
-    setBooks(null)
-    setBookNotes(null)
-    setActiveBook(null)
-    setActivePage(null)
     setToken('')
     setUser(null)
     auth.setToken('')
     window.localStorage.removeItem('loggedInAppUser')
   }
 
-
-  
   return (
     <div className="App">
       <link
@@ -71,7 +60,6 @@ function App() {
         <Header 
           user={user}
           logout={logout}
-          setActiveBook={setActiveBook}
           setMessage={setMessage}
           setLoading={setLoading}
         />
