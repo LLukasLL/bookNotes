@@ -24,3 +24,4 @@ Import your Kindle my Clippings File and Work with the marked sections from your
 - Collections of highlights from different books
 - Book lists => way of tracking reading / notetaking work
 - Communication between users feature => maybe personal info page and chat feature
+- Categorize Notes Feature

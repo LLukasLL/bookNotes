@@ -15,7 +15,6 @@ import BookNotes from "./components/BookNotes"
 import Register from './components/Register'
 import UserPage from './components/UserPage'
 
-import userService from './services/user'
 import auth from './services/auth'
 
 function App() {
@@ -118,6 +117,8 @@ function App() {
             element={<UserPage
               user={user}
               setErrorMessage={setErrorMessage}
+              setMessage={setMessage}
+              setLoading={setLoading}
             />}
           />
         </Routes>
