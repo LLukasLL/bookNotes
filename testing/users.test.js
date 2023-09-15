@@ -56,7 +56,7 @@ describe('user creation and login', () => {
 
     expect(usersAtEnd).toEqual(usersAtStart)
   })
-  test('update password works with correct credentials', async () => {
+  test('update password sets correct password', async () => {
     const usersAtStart = await helper.usersInDb()
     const userAtStart = await User.findById( usersAtStart[0].id )
     const token = await helper.login(api)
@@ -67,6 +67,10 @@ describe('user creation and login', () => {
       .expect(200)
     const pwIsNew = res.body.passwordHash !== userAtStart.passwordHash
     expect(pwIsNew).toBe(true)
+    await api
+      .post('/api/login')
+      .send({ username: 'root', password: 'Williwillswissen' })
+      .expect(200)
   })
   test('update password fails with incorrect credentials', async () => {
     const usersAtStart = await helper.usersInDb()
@@ -74,6 +78,32 @@ describe('user creation and login', () => {
     const token = await helper.login(api)
     await api
       .put(`/api/users/${usersAtStart[0].id}`)
+      .send({ password: 'wrongPassword', newPassword: 'Williwillswissen' })
+      .set('Authorization', `Bearer ${token}`)
+      .expect(401)
+    const userAtEnd = await User.findById( usersAtStart[0].id )
+    const pwIsNew = userAtEnd.passwordHash !== userAtStart.passwordHash
+    expect(pwIsNew).toBe(false)
+  })
+  test('update password fails with incorrect token', async () => {
+    const usersAtStart = await helper.usersInDb()
+    const userAtStart = await User.findById( usersAtStart[0].id )
+    const token = 'wrong token'
+    await api
+      .put(`/api/users/${usersAtStart[0].id}`)
+      .send({ password: 'wrongPassword', newPassword: 'Williwillswissen' })
+      .set('Authorization', `Bearer ${token}`)
+      .expect(400)
+    const userAtEnd = await User.findById( usersAtStart[0].id )
+    const pwIsNew = userAtEnd.passwordHash !== userAtStart.passwordHash
+    expect(pwIsNew).toBe(false)
+  })
+  test('update password fails with incorrect id in route', async () => {
+    const usersAtStart = await helper.usersInDb()
+    const userAtStart = await User.findById( usersAtStart[0].id )
+    const token = await helper.login(api)
+    await api
+      .put('/api/users/someid12345')
       .send({ password: 'wrongPassword', newPassword: 'Williwillswissen' })
       .set('Authorization', `Bearer ${token}`)
       .expect(401)
