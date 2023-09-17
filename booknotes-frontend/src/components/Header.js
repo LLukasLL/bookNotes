@@ -24,8 +24,10 @@ const Header = ({ user, logout, setMessage }) => {
             <Nav.Link onClick={() => navigate('/books')}>Books</Nav.Link>
             <Nav.Link onClick={() => navigate('/user')}>User</Nav.Link>
           </Nav>
-            { user && <Nav.Item style={{ paddingRight: '20vh'}}>logged in as '{user.username}'</Nav.Item>}
         </Navbar.Collapse>
+        <Nav>
+            { user && <Nav.Item style={{ paddingRight: '1vw'}}>logged in as '{user.username}'</Nav.Item>}
+        </Nav>
         <Nav>
           {user && <Nav.Link onClick={handleLogout}>Logout</Nav.Link>}
         </Nav>
