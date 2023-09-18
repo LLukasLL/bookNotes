@@ -7,7 +7,7 @@ import {
   useNavigate
 } from 'react-router-dom'
 
-import ErrMess from './components/ErrMess'
+import ErrMess from './components/ErrorMessage'
 import Message from './components/Message'
 import Header from './components/Header'
 import LoginForm from './components/Login'
@@ -38,7 +38,7 @@ function App() {
   }, [])
   
   useEffect(() => {
-    if (errorMessage !== null) setTimeout(() => {setErrorMessage(null)}, 500)
+    if (errorMessage !== null) setTimeout(() => {setErrorMessage(null)}, 5000)
   }, [errorMessage])
 
   const logout = () => {

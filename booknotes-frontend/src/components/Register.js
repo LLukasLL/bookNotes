@@ -37,7 +37,7 @@ const RegisterForm = ({
       navigate('/login')
     } catch (exception) {
       setErrorMessage(exception)
-      setTimeout(() => setErrorMessage(null), 500)
+      setTimeout(() => setErrorMessage(null), 5000)
     }
   }
 

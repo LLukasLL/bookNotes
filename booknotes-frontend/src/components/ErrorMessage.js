@@ -1,7 +1,7 @@
 const ErrorMessage = ({ errorMessage }) => {
   return (
     <div style={{ display: "flex", justifyContent: "center" }} className="errorMessage">
-      <p style={{ marginRight: "10px", color: "red" }}>{ErrorMessage}</p>
+      <p style={{ margin: "10px", color: "red" }}>{errorMessage}</p>
     </div>
   )
 }
