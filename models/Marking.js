@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const markerSchema = mongoose.Schema({
+const markingSchema = mongoose.Schema({
   name: String,
   color: String,
   borderStyle: String,
@@ -11,7 +11,7 @@ const markerSchema = mongoose.Schema({
   }
 })
 
-markerSchema.set('toJSON', {
+markingSchema.set('toJSON', {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString()
     delete returnedObject._id
@@ -19,6 +19,6 @@ markerSchema.set('toJSON', {
   }
 })
 
-const Marker = mongoose.model('Book', markerSchema)
+const Marking = mongoose.model('Marking', markingSchema)
 
-module.exports = Marker
+module.exports = Marking

@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt')
 const User = require('../models/User')
 const Book = require('../models/Book')
 const BookNote = require('../models/BookNote')
+const Marking = require('../models/Marking')
 
 const login = async (api) => {
   const result = await api
@@ -16,6 +17,7 @@ const initializeDB = async () => {
   await User.deleteMany({})
   await Book.deleteMany({})
   await BookNote.deleteMany({})
+  await Marking.deleteMany({})
 
   const passwordHash = await bcrypt.hash('mySecretPassword', 10)
   const user = new User({ username: 'root', passwordHash })
@@ -93,6 +95,22 @@ const initializeDB = async () => {
   for (let bookNote of BookNotes) {
     await bookNote.save()
   }
+  const markings = [
+    {
+      name: 'Quote',
+      color: 'red',
+      user: rootID
+    },
+    {
+      name: 'to research',
+      color: 'blue',
+      user: rootID,
+    }
+  ]
+  const Markings = markings.map(marking => new Marking(marking))
+  for (let Marking of Markings) {
+    await Marking.save()
+  }
 }
 
 const usersInDb = async () => {
@@ -107,6 +125,11 @@ const booksInDb = async () => {
 
 const bookNotesInDb = async () => {
   const objects = await BookNote.find({})
+  return objects.map(b => b.toJSON())
+}
+
+const MarkingsInDb = async () => {
+  const objects = await Marking.find({})
   return objects.map(b => b.toJSON())
 }
 
@@ -148,4 +171,5 @@ module.exports = {
   booksInDb,
   bookNotesInDb,
   clippingsTest,
+  MarkingsInDb,
 }

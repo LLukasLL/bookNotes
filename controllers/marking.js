@@ -6,7 +6,7 @@ const User = require('../models/User')
 
 markingsRouter.get('/', async (req, res) => {
   // eslint-disable-next-line no-undef
-  const decodedToken = jwt.verify(request.token, process.env.SECRET)
+  const decodedToken = jwt.verify(req.token, process.env.SECRET)
   if (!decodedToken.id) {
     return res.status(401).json({ error: 'token invalid' })
   }
@@ -22,7 +22,7 @@ markingsRouter.get('/:id', async (request, response) => {
     return response.status(401).json({ error: 'token invalid' })
   }
   // const user = await User.findById(decodedToken.id)
-  const marking = await User.findById(request.params.id)
+  const marking = await Marking.findById(request.params.id)
   response.json(marking)
 })
 

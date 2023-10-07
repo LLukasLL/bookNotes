@@ -15,6 +15,7 @@ const bookNotesRouter = require('./controllers/bookNotes')
 const clippingsRouter = require('./controllers/clippings')
 // const notesRouter = require('./controllers/notes')
 const middleware = require('./utils/middleware')
+const markingsRouter = require('./controllers/marking')
 
 
 const password = config.MONGODB_URI
@@ -42,6 +43,7 @@ app.use('/api/login', loginRouter)
 app.use('/api/books', booksRouter)
 app.use('/api/booknotes', bookNotesRouter)
 app.use('/api/clippings', clippingsRouter)
+app.use('/api/markings', markingsRouter)
 
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)

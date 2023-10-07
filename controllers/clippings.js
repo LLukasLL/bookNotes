@@ -105,7 +105,6 @@ clippingsRouter.post('/', async (req, res) => {
       }
     }
   }
-  console.log('finished')
   res.status(201).json(result)
 })
 
