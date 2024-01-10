@@ -13,12 +13,13 @@ const login = async (api) => {
 }
 
 const initializeDB = async () => {
-  // intialize root User
+  // delete complete DB
   await User.deleteMany({})
   await Book.deleteMany({})
   await BookNote.deleteMany({})
   await Marking.deleteMany({})
 
+  // intialize root User and save access
   const passwordHash = await bcrypt.hash('mySecretPassword', 10)
   const user = new User({ username: 'root', passwordHash })
 
@@ -28,6 +29,7 @@ const initializeDB = async () => {
   const rootUserFromDBObj = rootUserFromDB[0].toJSON()
   const rootID = rootUserFromDBObj.id
 
+  // initialize books:
   const books = [
     {
       title: 'Meditations',
@@ -58,9 +60,31 @@ const initializeDB = async () => {
 
   let booksFromDB = await Book.find({})
   booksFromDB = booksFromDB.map(b => b.toJSON())
-  // booksFromDB.forEach(b => rootUserFromDB[0].books = rootUserFromDB[0].books.concat(b.id))
-  // await rootUserFromDB[0].save()
 
+  // initialize markings:
+  const markings = [
+    {
+      name: 'Quote',
+      color: 'red',
+      iconName: 'search',
+      user: rootID
+    },
+    {
+      name: 'to research',
+      color: 'blue',
+      iconName: 'share',
+      user: rootID,
+    }
+  ]
+  const Markings = markings.map(marking => new Marking(marking))
+  for (let Marking of Markings) {
+    await Marking.save()
+  }
+
+  let markingsFromDB = await Marking.find({})
+  markingsFromDB = markingsFromDB.map(m => m.toJSON())
+
+  // initialize bookNotes:
   const bookNotes = [
     {
       highlight: 'Manus Manum lavat',
@@ -74,7 +98,8 @@ const initializeDB = async () => {
       origLocationStart: 10,
       locationEnd: 12,
       book: booksFromDB[0].id,
-      user: rootID
+      user: rootID,
+      marking: markingsFromDB[0].id
     },
     {
       highlight: 'some stoic shit',
@@ -88,28 +113,13 @@ const initializeDB = async () => {
       origLocationStart: 20,
       locationEnd: 24,
       book: booksFromDB[0].id,
-      user: rootID
+      user: rootID,
+      marking: markingsFromDB[1].id
     }
   ]
   const BookNotes = bookNotes.map(bookNote => new BookNote(bookNote))
   for (let bookNote of BookNotes) {
     await bookNote.save()
-  }
-  const markings = [
-    {
-      name: 'Quote',
-      color: 'red',
-      user: rootID
-    },
-    {
-      name: 'to research',
-      color: 'blue',
-      user: rootID,
-    }
-  ]
-  const Markings = markings.map(marking => new Marking(marking))
-  for (let Marking of Markings) {
-    await Marking.save()
   }
 }
 

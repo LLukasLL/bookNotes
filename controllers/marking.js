@@ -60,7 +60,7 @@ markingsRouter.put('/:id', async (request, response) => {
   }
   const marking = await Marking.findById(request.params.id)
   for (const key in request.body) { marking[key]=request.body[key] }
-  const result = marking.save()
+  const result = await marking.save()
   response.status(200).json(result)
 })
 module.exports = markingsRouter

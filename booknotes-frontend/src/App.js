@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   BrowserRouter as Router,
   Routes, 
@@ -15,6 +15,7 @@ import Books from "./components/Books"
 import BookNotes from "./components/BookNotes"
 import Register from './components/Register'
 import UserPage from './components/UserPage'
+import Markings from './components/Markings'
 
 import auth from './services/auth'
 
@@ -67,11 +68,11 @@ function App() {
         <Message message={message} setMessage={setMessage} loading={loading}/>
         <Routes>
           <Route path='/' element={
-            user !== null && user !== 'not checked' ? <Navigate replace to="/books" /> : <Navigate replace to="/login" />
+            user !== null && user !== 'not cheked' ? <Navigate replace to="/books" /> : <Navigate replace to="/login" />
           }/>
           <Route path='/login' element={
             <div style={{padding: 0}}>
-              {user !== null && user !== 'not checked' ? <Navigate replace to="/books" /> : null}
+              {user !== null && user !== 'not cheked' ? <Navigate replace to="/books" /> : null}
               <LoginForm
                 user={user}
                 setUser={setUser}
@@ -108,6 +109,14 @@ function App() {
               setMessage={setMessage}
               setLoading={setLoading}
             />}
+          />
+          <Route path='/markings' 
+            element={
+              <Markings
+                user={user}
+                setErrorMessage={setErrorMessage}
+              />
+            }
           />
         </Routes>
       </Router>

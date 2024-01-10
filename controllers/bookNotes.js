@@ -5,14 +5,6 @@ const User = require('../models/User')
 const Book = require('../models/Book')
 const BookNote = require('../models/BookNote')
 
-// to do:
-// define only necessary routes
-// get :id, get all from book, post, put
-// change Mongoose Schema to allow reference to other Booknotes? = Works ?
-// update initializeDB for Booknotes
-// write tests for BookNotes
-
-
 bookNotesRouter.get('/', async (request, response) => {
   // eslint-disable-next-line no-undef
   const decodedToken = jwt.verify(request.token, process.env.SECRET)
@@ -85,7 +77,7 @@ bookNotesRouter.put('/:id', async (request, response) => {
   }
   const bookNote = await BookNote.findById(request.params.id)
   for (const key in request.body) { bookNote[key]=request.body[key] }
-  const result = bookNote.save()
+  const result = await bookNote.save()
   response.status(200).json(result)
 })
 

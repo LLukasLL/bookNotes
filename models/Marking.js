@@ -3,8 +3,7 @@ const mongoose = require('mongoose')
 const markingSchema = mongoose.Schema({
   name: String,
   color: String,
-  borderStyle: String,
-  borderColor: String,
+  iconName: String,
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'

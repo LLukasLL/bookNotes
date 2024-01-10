@@ -63,7 +63,7 @@ booksRouter.put('/:id', async (request, response) => {
   }
   const book = await Book.findById(request.params.id)
   for (const key in request.body) { book[key]=request.body[key] }
-  const result = book.save()
+  const result = await book.save()
   response.status(200).json(result)
 })
 

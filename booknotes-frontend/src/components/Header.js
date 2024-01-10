@@ -23,6 +23,7 @@ const Header = ({ user, logout, setMessage }) => {
             <Nav.Link onClick={() => navigate('/')}>Home</Nav.Link>
             <Nav.Link onClick={() => navigate('/books')}>Books</Nav.Link>
             <Nav.Link onClick={() => navigate('/user')}>User</Nav.Link>
+            <Nav.Link onClick={() => navigate('/markings')}>Markings</Nav.Link>
           </Nav>
         </Navbar.Collapse>
         <Nav>
