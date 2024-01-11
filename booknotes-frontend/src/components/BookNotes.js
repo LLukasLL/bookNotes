@@ -4,6 +4,8 @@ import Container from "react-bootstrap/esm/Container"
 
 import bookNotesService from '../services/bookNote'
 import bookService from '../services/book'
+import markingsService from '../services/markings'
+
 import BookNote from './BookNote'
 
 import { useParams } from 'react-router-dom'
@@ -11,6 +13,7 @@ import { useParams } from 'react-router-dom'
 const BookNotes = ({ user, setErrorMessage, refresh, setRefresh }) => {
   const [bookNotes, setBookNotes] = useState([])
   const [book, setBook] = useState([])
+  const [markings, setMarkings] = useState([])
 
   const { id } = useParams()
 
@@ -31,9 +34,18 @@ const BookNotes = ({ user, setErrorMessage, refresh, setRefresh }) => {
         setErrorMessage('request failed')
       }
     }
+    async function getMarkings() {
+      try {
+        const allMarkings = await markingsService.getAll()
+        setMarkings(allMarkings)
+      } catch {
+        setErrorMessage('request failed')
+      }
+    }
     if (user !== null && user !== 'not checked') {
       getBook()
       getBookNotes()
+      getMarkings()
     }
   }, [user])
 
@@ -55,6 +67,7 @@ const BookNotes = ({ user, setErrorMessage, refresh, setRefresh }) => {
               bookNote={bookNote}
               refresh={refresh}
               setRefresh={setRefresh}
+              markings={markings}
             />)}
         </Accordion>
       </Container>

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Accordion from 'react-bootstrap/Accordion'
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/esm/Button'
@@ -8,9 +8,12 @@ import Col from 'react-bootstrap/Col';
 import CloseButton from 'react-bootstrap/CloseButton'
 
 import bookNotesService from '../services/bookNote'
+import { icons } from '../services/icons'
+
+import Symbol from './Symbol';
 
 
-const BookNote = ({ bookNote, refresh, setRefresh }) => {
+const BookNote = ({ bookNote, markings, refresh, setRefresh }) => {
 
   const [mod, setMod] = useState(null)
   const [keywords, setKeywords] = useState(bookNote.keywords)
@@ -20,6 +23,8 @@ const BookNote = ({ bookNote, refresh, setRefresh }) => {
   const [newComment, setNewComment] = useState('')
   const [locationStart, setLocationStart] = useState(bookNote.locationStart)
   const [locationEnd, setLocationEnd] = useState(bookNote.locationEnd)
+  const [markingID, setMarkingID] = useState(bookNote.marking)
+  const [marking, setMarking] = useState({})
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -61,9 +66,34 @@ const BookNote = ({ bookNote, refresh, setRefresh }) => {
     setMod(null)
   }
 
+  const getIconPath = (thisIconName) => {
+    const icon = icons.find((element => element.name === thisIconName))
+    return icon.path
+  }
+
+  const getMarking = () => {
+    for (let i = 0; i < markings.length; i++) {
+      if (markingID === markings[i].id) {
+        setMarking(markings[i])
+        break
+      }
+    }
+  }
+
+  useEffect(() => {
+    getMarking()
+  }, [markingID])
+
+
   return ( mod === null 
         ? <Accordion.Item eventKey={bookNote.id} key={bookNote.id}>
         <Accordion.Header>
+          {marking.iconName
+            ? <Symbol
+                path={getIconPath(marking.iconName)}
+                color={marking.color}
+              />
+            : null}
           {highlight}
         </Accordion.Header>
         <Accordion.Body>
@@ -78,6 +108,12 @@ const BookNote = ({ bookNote, refresh, setRefresh }) => {
         </Accordion.Item>
         : <Accordion.Item eventKey={bookNote.id} key={bookNote.id}>
         <Accordion.Header>
+          {marking.iconName
+            ? <Symbol
+                path={getIconPath(marking.iconName)}
+                color={marking.color}
+              />
+            : null}
           {highlight}
         </Accordion.Header>
         <Accordion.Body>

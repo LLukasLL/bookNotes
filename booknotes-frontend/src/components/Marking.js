@@ -3,10 +3,8 @@ import { useState } from 'react'
 import Accordion from 'react-bootstrap/Accordion'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/esm/Button'
-import Badge from 'react-bootstrap/Badge'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import CloseButton from 'react-bootstrap/CloseButton'
 
 import Symbol from './Symbol'
 
@@ -111,3 +109,4 @@ const Marking = ({ marking }) => {
 }
 
 export default Marking
+
